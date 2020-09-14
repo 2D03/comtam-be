@@ -14,7 +14,7 @@ type Dish struct {
 	CreatedById     *string       `json:"createdById" bson:"created_by_id,omitempty"`
 	CreatedByName   *string       `json:"createdByName" bson:"created_by_name,omitempty"`
 	UniqueID        *string       `json:"uniqueId,omitempty" bson:"unique_id,omitempty"`
-	PriceAmount     *int64        `json:"priceAmount" bson:"price_amount,omitempty"`
+	PriceAmount     *int64        `json:"priceAmount" bson:"price_amount"`
 }
 
 var DishModel = &utils.DBModel{

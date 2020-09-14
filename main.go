@@ -9,6 +9,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"net"
+	"os"
 	"strings"
 	"time"
 )
@@ -55,10 +56,13 @@ func setupDB() {
 		Password: envConfig["dbPassword"],
 	}
 
-	tlsConfig := &tls.Config{}
-	mainDB.DialServer = func(addr *mgo.ServerAddr) (net.Conn, error) {
-		conn, err := tls.Dial("tcp", addr.String(), tlsConfig) // add TLS config
-		return conn, err
+	env := os.Getenv("env")
+	if env != "local" {
+		tlsConfig := &tls.Config{}
+		mainDB.DialServer = func(addr *mgo.ServerAddr) (net.Conn, error) {
+			conn, err := tls.Dial("tcp", addr.String(), tlsConfig) // add TLS config
+			return conn, err
+		}
 	}
 	mainDBSession, err := mgo.DialWithInfo(mainDB)
 	if err != nil {
