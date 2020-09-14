@@ -1,75 +1,74 @@
 package main
 
 import (
-	"net/http"
-	"strconv"
-
+	"crypto/tls"
+	"github.com/Kajekk/comtam/api"
+	"github.com/Kajekk/comtam/conf"
+	"github.com/Kajekk/comtam/model"
+	"github.com/globalsign/mgo"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"net"
+	"strings"
+	"time"
 )
-
-type (
-	user struct {
-		ID   int    `json:"id"`
-		Name string `json:"name"`
-	}
-)
-
-var (
-	users = map[int]*user{}
-	seq   = 1
-)
-
-//----------
-// Handlers
-//----------
-
-func createUser(c echo.Context) error {
-	u := &user{
-		ID: seq,
-	}
-	if err := c.Bind(u); err != nil {
-		return err
-	}
-	users[u.ID] = u
-	seq++
-	return c.JSON(http.StatusCreated, u)
-}
-
-func getUser(c echo.Context) error {
-	id, _ := strconv.Atoi(c.Param("id"))
-	return c.JSON(http.StatusOK, users[id])
-}
-
-func updateUser(c echo.Context) error {
-	u := new(user)
-	if err := c.Bind(u); err != nil {
-		return err
-	}
-	id, _ := strconv.Atoi(c.Param("id"))
-	users[id].Name = u.Name
-	return c.JSON(http.StatusOK, users[id])
-}
-
-func deleteUser(c echo.Context) error {
-	id, _ := strconv.Atoi(c.Param("id"))
-	delete(users, id)
-	return c.NoContent(http.StatusNoContent)
-}
 
 func main() {
+	// Echo instance
 	e := echo.New()
+
+	setupDB()
 
 	// Middleware
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
+	//CORs
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"*"},
+		AllowMethods: []string{echo.GET, echo.HEAD, echo.PUT, echo.PATCH, echo.POST, echo.DELETE},
+	}))
+
 	// Routes
-	e.POST("/users", createUser)
-	e.GET("/users/:id", getUser)
-	e.PUT("/users/:id", updateUser)
-	e.DELETE("/users/:id", deleteUser)
+	e.GET("/api-info", api.GetAPIInfo)
+	e.GET("/menu", api.GetMenu)
+	e.POST("/dish", api.CreateDish)
 
 	// Start server
-	e.Logger.Fatal(e.Start(":1323"))
+	e.Logger.Fatal(e.Start(":8000"))
+}
+
+func setupDB() {
+	println("Connecting db")
+
+	envConfig, err := conf.GetConfigDBMap()
+	if err != nil {
+		panic(err)
+	}
+
+	//db main
+	mainDB := &mgo.DialInfo{
+		Addrs:   strings.Split(envConfig["dbHost"], ","),
+		Timeout: 60 * time.Second,
+		//Database: AuthDatabase,
+		Username: envConfig["dbUser"],
+		Password: envConfig["dbPassword"],
+	}
+
+	tlsConfig := &tls.Config{}
+	mainDB.DialServer = func(addr *mgo.ServerAddr) (net.Conn, error) {
+		conn, err := tls.Dial("tcp", addr.String(), tlsConfig) // add TLS config
+		return conn, err
+	}
+	mainDBSession, err := mgo.DialWithInfo(mainDB)
+	if err != nil {
+		panic(err)
+	}
+
+	onDBConnected(mainDBSession)
+	println("Connected db")
+}
+
+func onDBConnected(s *mgo.Session) {
+	model.InitDishModel(s, conf.Config.MainDBName)
 }
