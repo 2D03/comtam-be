@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/Kajekk/comtam/utils"
+	"github.com/2D03/comtam-be/utils"
 	"github.com/globalsign/mgo"
 	"github.com/globalsign/mgo/bson"
 	"time"

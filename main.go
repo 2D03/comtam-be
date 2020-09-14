@@ -2,9 +2,9 @@ package main
 
 import (
 	"crypto/tls"
-	"github.com/Kajekk/comtam/api"
-	"github.com/Kajekk/comtam/conf"
-	"github.com/Kajekk/comtam/model"
+	"github.com/2D03/comtam-be/api"
+	"github.com/2D03/comtam-be/conf"
+	"github.com/2D03/comtam-be/model"
 	"github.com/globalsign/mgo"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"

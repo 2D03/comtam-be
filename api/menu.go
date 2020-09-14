@@ -2,7 +2,7 @@ package api
 
 import (
 	"encoding/json"
-	"github.com/Kajekk/comtam/model"
+	"github.com/2D03/comtam-be/model"
 	"github.com/labstack/echo/v4"
 	"net/http"
 )

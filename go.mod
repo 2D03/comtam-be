@@ -1,4 +1,4 @@
-module github.com/Kajekk/comtam
+module github.com/2D03/comtam-be
 
 go 1.12
 
