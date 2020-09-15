@@ -118,6 +118,27 @@ func (m *DBModel) Query(query interface{}) *APIResponse {
 	}
 }
 
+func (m *DBModel) Delete(selector interface{}) *APIResponse {
+	s := m.session.Copy()
+	defer s.Close()
+	if m.collection == nil {
+		m.collection = s.DB(m.DBName).C(m.ColName)
+	}
+	col := m.collection.With(s)
+	err := col.Remove(selector)
+	if err != nil {
+		return &APIResponse{
+			Status:    APIStatus.Error,
+			Message:   "Delete error: " + err.Error(),
+			ErrorCode: "DELETE_FAILED",
+		}
+	}
+	return &APIResponse{
+		Status:  APIStatus.Ok,
+		Message: "Delete " + m.ColName + " successfully.",
+	}
+}
+
 func (m *DBModel) convertToBson(entity interface{}) (bson.M, error) {
 	if entity == nil {
 		return bson.M{}, nil
