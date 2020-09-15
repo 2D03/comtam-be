@@ -47,7 +47,6 @@ func (m *DBModel) Create(entity interface{}) *APIResponse {
 		m.collection = s.DB(m.DBName).C(m.ColName)
 	}
 	col := m.collection.With(s)
-	//err := col.Insert(index)
 	obj, err := m.convertToBson(entity)
 	if err != nil {
 		return &APIResponse{
@@ -71,9 +70,27 @@ func (m *DBModel) Create(entity interface{}) *APIResponse {
 		}
 	}
 
+	t, err := bson.Marshal(obj)
+	if err != nil {
+		return &APIResponse{
+			Status:  APIStatus.Error,
+			Message: "Marshal error: " + err.Error(),
+		}
+	}
+	typ := reflect.TypeOf(m.TemplateModel)
+	createdObj := reflect.New(typ).Interface()
+	err = bson.Unmarshal(t, createdObj)
+	if err != nil {
+		return &APIResponse{
+			Status:  APIStatus.Error,
+			Message: "Unmarshal error: " + err.Error(),
+		}
+	}
+
 	return &APIResponse{
 		Status:  APIStatus.Ok,
 		Message: "Create " + m.ColName + " successfully.",
+		Data:    createdObj,
 	}
 }
 

@@ -28,7 +28,8 @@ func CreateDish(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, &utils.APIResponse{
-		Status:  utils.APIStatus.Ok,
-		Message: "Created dish successfully",
+		Status:  result.Status,
+		Message: result.Message,
+		Data:    result.Data,
 	})
 }

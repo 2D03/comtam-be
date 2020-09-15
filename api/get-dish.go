@@ -27,8 +27,8 @@ func GetDish(c echo.Context) error {
 	}
 	rs := model.DishModel.Query(input)
 	return c.JSON(http.StatusOK, &utils.APIResponse{
-		Status:  utils.APIStatus.Ok,
-		Message: "Query data successfully",
-		Data:    rs,
+		Status:  rs.Status,
+		Message: rs.Message,
+		Data:    rs.Data,
 	})
 }
