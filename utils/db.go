@@ -88,10 +88,10 @@ func (m *DBModel) Query(query interface{}) *APIResponse {
 	t := reflect.TypeOf(m.TemplateModel)
 	list := reflect.MakeSlice(reflect.SliceOf(t), 0, 0).Interface()
 	err := q.All(&list)
-	if err != nil {
+	if err != nil || reflect.ValueOf(list).Len() == 0 {
 		return &APIResponse{
-			Status:  APIStatus.Error,
-			Message: "Error: " + err.Error(),
+			Status:  APIStatus.NotFound,
+			Message: "Not found any matched " + m.ColName + ".",
 		}
 	}
 	return &APIResponse{
