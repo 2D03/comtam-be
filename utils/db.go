@@ -4,14 +4,16 @@ import (
 	"errors"
 	"github.com/globalsign/mgo"
 	"github.com/globalsign/mgo/bson"
+	"reflect"
 	"time"
 )
 
 type DBModel struct {
-	ColName    string
-	DBName     string
-	collection *mgo.Collection
-	session    *mgo.Session
+	TemplateModel interface{}
+	ColName       string
+	DBName        string
+	collection    *mgo.Collection
+	session       *mgo.Session
 }
 
 func (m *DBModel) Init(s *mgo.Session) error {
@@ -72,6 +74,30 @@ func (m *DBModel) Create(entity interface{}) *APIResponse {
 	return &APIResponse{
 		Status:  APIStatus.Ok,
 		Message: "Create " + m.ColName + " successfully.",
+	}
+}
+
+func (m *DBModel) Query(query interface{}) *APIResponse {
+	s := m.session.Copy()
+	defer s.Close()
+	if m.collection == nil {
+		m.collection = s.DB(m.DBName).C(m.ColName)
+	}
+	col := m.collection.With(s)
+	q := col.Find(query)
+	t := reflect.TypeOf(m.TemplateModel)
+	list := reflect.MakeSlice(reflect.SliceOf(t), 0, 0).Interface()
+	err := q.All(&list)
+	if err != nil {
+		return &APIResponse{
+			Status:  APIStatus.Error,
+			Message: "Error: " + err.Error(),
+		}
+	}
+	return &APIResponse{
+		Status:  APIStatus.Ok,
+		Message: "Query " + m.ColName + " successfully.",
+		Data:    list,
 	}
 }
 

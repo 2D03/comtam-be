@@ -11,17 +11,24 @@ import (
 func CreateDish(c echo.Context) error {
 	q := c.QueryParam("q")
 	var input model.Dish
-	_ = json.Unmarshal([]byte(q), &input)
+	err := json.Unmarshal([]byte(q), &input)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, &utils.APIResponse{
+			Status:  utils.APIStatus.Error,
+			Message: "Error: " + err.Error(),
+		})
+	}
 
 	result := model.DishModel.Create(input)
 	if result.Status != utils.APIStatus.Ok {
-		return c.String(http.StatusInternalServerError, result.Message)
+		return c.JSON(http.StatusInternalServerError, &utils.APIResponse{
+			Status:  utils.APIStatus.Error,
+			Message: result.Message,
+		})
 	}
 
-	//return &utils.APIResponse{
-	//	Status:  utils.APIStatus.Ok,
-	//	Message: "Created dish successfully",
-	//}
-
-	return c.String(http.StatusOK, result.Message)
+	return c.JSON(http.StatusOK, &utils.APIResponse{
+		Status:  utils.APIStatus.Ok,
+		Message: "Created dish successfully",
+	})
 }

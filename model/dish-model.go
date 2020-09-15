@@ -18,7 +18,8 @@ type Dish struct {
 }
 
 var DishModel = &utils.DBModel{
-	ColName: "dishes",
+	ColName:       "dishes",
+	TemplateModel: Dish{},
 }
 
 func InitDishModel(s *mgo.Session, dbName string) {
