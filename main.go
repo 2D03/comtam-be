@@ -33,6 +33,7 @@ func main() {
 	// Routes
 	e.GET("/api-info", api.GetAPIInfo)
 	e.GET("/menu", api.GetMenu)
+	e.GET("/dish", api.GetDish)
 	e.POST("/dish", api.CreateDish)
 
 	// Start server
