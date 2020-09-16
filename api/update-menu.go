@@ -29,19 +29,6 @@ func UpdateMenu(c echo.Context) error {
 	if input.Name != nil {
 		updater.Name = input.Name
 	}
-	var queryDishesResult *utils.APIResponse
-	if len(input.Dishes) > 0 {
-		queryDishesResult = model.DishModel.Query(model.DishForFilter{
-			UniqueID: utils.MgoOperation{In: input.Dishes},
-		})
-		if queryDishesResult.Status != utils.APIStatus.Ok {
-			return c.JSON(http.StatusInternalServerError, &utils.APIResponse{
-				Status:  queryDishesResult.Status,
-				Message: "Cannot get dishes info: " + queryDishesResult.Message,
-			})
-		}
-		updater.Dish = queryDishesResult.Data.([]*model.Dish)
-	}
 
 	res := model.MenuModel.Update(query, updater)
 	if res.Status != utils.APIStatus.Ok {

@@ -1,7 +1,6 @@
 package api
 
 import (
-	"encoding/json"
 	"github.com/2D03/comtam-be/model"
 	"github.com/2D03/comtam-be/utils"
 	"github.com/labstack/echo/v4"
@@ -9,9 +8,8 @@ import (
 )
 
 func CreateDish(c echo.Context) error {
-	q := c.QueryParam("q")
-	var input model.Dish
-	err := json.Unmarshal([]byte(q), &input)
+	var input *model.Dish
+	err := utils.GetContent(c, &input)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, &utils.APIResponse{
 			Status:  utils.APIStatus.Error,
