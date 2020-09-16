@@ -118,6 +118,44 @@ func (m *DBModel) Query(query interface{}) *APIResponse {
 	}
 }
 
+func (m *DBModel) Update(query interface{}, updater interface{}) *APIResponse {
+	s := m.session.Copy()
+	defer s.Close()
+	if m.collection == nil {
+		m.collection = s.DB(m.DBName).C(m.ColName)
+	}
+	col := m.collection.With(s)
+	obj, err := m.convertToBson(query)
+	if err != nil {
+		return &APIResponse{
+			Status:  APIStatus.Error,
+			Message: "DB error: " + err.Error(),
+		}
+	}
+	obj["last_updated_time"] = time.Now()
+	info, err := col.UpdateAll(query, bson.M{
+		"$set": obj,
+	})
+	if err != nil {
+		return &APIResponse{
+			Status:    APIStatus.Error,
+			Message:   "Update error: " + err.Error(),
+			ErrorCode: "UPDATE_FAILED",
+		}
+	}
+	if info.Matched == 0 {
+		return &APIResponse{
+			Status:  APIStatus.Ok,
+			Message: "Not found any " + m.ColName + ".",
+		}
+	}
+
+	return &APIResponse{
+		Status:  APIStatus.Ok,
+		Message: "Update " + m.ColName + " successfully.",
+	}
+}
+
 func (m *DBModel) Delete(selector interface{}) *APIResponse {
 	s := m.session.Copy()
 	defer s.Close()
