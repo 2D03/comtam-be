@@ -73,6 +73,7 @@ func BookOrder(c echo.Context) error {
 	return c.JSON(http.StatusOK, &utils.APIResponse{
 		Status:  utils.APIStatus.Ok,
 		Message: "Booking order successfully",
+		Data:    conf.SendgridAPIKey,
 	})
 }
 
