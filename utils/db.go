@@ -118,6 +118,31 @@ func (m *DBModel) Query(query interface{}) *APIResponse {
 	}
 }
 
+func (m *DBModel) Count(query interface{}) *APIResponse {
+	s := m.session.Copy()
+	defer s.Close()
+	if m.collection == nil {
+		m.collection = s.DB(m.DBName).C(m.ColName)
+	}
+	col := m.collection.With(s)
+
+	count, err := col.Find(query).Count()
+	if err != nil {
+		return &APIResponse{
+			Status:    APIStatus.Error,
+			Message:   "Count error: " + err.Error(),
+			ErrorCode: "COUNT_FAILED",
+		}
+	}
+
+	return &APIResponse{
+		Status:  APIStatus.Ok,
+		Message: "Count query executed successfully.",
+		Total:   int64(count),
+	}
+
+}
+
 func (m *DBModel) Update(query interface{}, updater interface{}) *APIResponse {
 	s := m.session.Copy()
 	defer s.Close()

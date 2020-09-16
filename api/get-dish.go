@@ -26,6 +26,12 @@ func GetDish(c echo.Context) error {
 		})
 	}
 	rs := model.DishModel.Query(input)
+	if rs.Status != utils.APIStatus.Ok {
+		return c.JSON(http.StatusInternalServerError, &utils.APIResponse{
+			Status:  utils.APIStatus.Error,
+			Message: rs.Message,
+		})
+	}
 	return c.JSON(http.StatusOK, &utils.APIResponse{
 		Status:  rs.Status,
 		Message: rs.Message,

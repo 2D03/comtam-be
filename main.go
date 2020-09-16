@@ -78,4 +78,5 @@ func setupDB() {
 
 func onDBConnected(s *mgo.Session) {
 	model.InitDishModel(s, conf.Config.MainDBName)
+	model.InitMenuModel(s, conf.Config.MainDBName)
 }
