@@ -42,6 +42,8 @@ func main() {
 	e.PUT("/dish", api.UpdateDish)
 	e.DELETE("/dish", api.DeleteDish)
 
+	e.POST("/order", api.BookOrder)
+
 	// Start server
 	e.Logger.Fatal(e.Start(":8000"))
 }
@@ -83,4 +85,5 @@ func setupDB() {
 func onDBConnected(s *mgo.Session) {
 	model.InitDishModel(s, conf.Config.MainDBName)
 	model.InitMenuModel(s, conf.Config.MainDBName)
+	model.InitOrderModel(s, conf.Config.MainDBName)
 }

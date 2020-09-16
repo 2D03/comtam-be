@@ -29,8 +29,8 @@ func UpdateDish(c echo.Context) error {
 	if input.Name != nil {
 		updater.Name = input.Name
 	}
-	if input.PriceAmount != nil {
-		updater.PriceAmount = input.PriceAmount
+	if input.Price != nil {
+		updater.Price = input.Price
 	}
 	if input.MenuId != nil {
 		updater.MenuId = input.MenuId

@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"strings"
 )
 
 type config struct {
@@ -15,9 +16,14 @@ type config struct {
 }
 
 var Config *config
+var ToEmail []string
+var SendgridAPIKey string
 
 func init() {
 	env := os.Getenv("env")
+	SendgridAPIKey = os.Getenv("SENDGRID_API_KEY")
+	toEmail := os.Getenv("ToEmail")
+	ToEmail = strings.Split(toEmail, ",")
 	switch env {
 	case "local":
 		Config = &config{

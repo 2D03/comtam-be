@@ -14,7 +14,7 @@ type Dish struct {
 	UniqueID        *string       `json:"uniqueId,omitempty" bson:"unique_id,omitempty"`
 	Name            *string       `json:"name" bson:"name,omitempty"`
 	MenuId          *string       `json:"menuId" bson:"menu_id,omitempty"`
-	PriceAmount     *int64        `json:"priceAmount" bson:"price_amount,omitempty"`
+	Price           *int64        `json:"price" bson:"price,omitempty"`
 }
 
 type DishForFilter struct {
@@ -23,13 +23,13 @@ type DishForFilter struct {
 	UniqueID      interface{} `json:"uniqueId" bson:"unique_id,omitempty"`
 	MenuId        interface{} `json:"menuId" bson:"menu_id,omitempty"`
 	Name          interface{} `json:"name" bson:"name,omitempty"`
-	PriceAmount   interface{} `json:"priceAmount" bson:"price_amount,omitempty"`
+	Price         interface{} `json:"price" bson:"price,omitempty"`
 }
 
 type ReqDish struct {
-	UniqueID    *string `json:"uniqueId"`
-	Name        *string `json:"name"`
-	PriceAmount *int64  `json:"priceAmount"`
+	UniqueID *string `json:"uniqueId"`
+	Name     *string `json:"name"`
+	Price    *int64  `json:"price"`
 }
 
 var DishModel = &utils.DBModel{
