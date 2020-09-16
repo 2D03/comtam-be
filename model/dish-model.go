@@ -18,6 +18,14 @@ type Dish struct {
 	PriceAmount     *int64        `json:"priceAmount" bson:"price_amount"`
 }
 
+type DishForFilter struct {
+	CreatedById   interface{} `json:"createdById" bson:"created_by_id,omitempty"`
+	CreatedByName interface{} `json:"createdByName" bson:"created_by_name,omitempty"`
+	UniqueID      interface{} `json:"uniqueId,omitempty" bson:"unique_id,omitempty"`
+	Name          interface{} `json:"name" bson:"name"`
+	PriceAmount   interface{} `json:"priceAmount" bson:"price_amount"`
+}
+
 var DishModel = &utils.DBModel{
 	ColName:       "dishes",
 	TemplateModel: Dish{},

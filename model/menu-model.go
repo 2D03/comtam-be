@@ -18,6 +18,12 @@ type Menu struct {
 	Dish            []*Dish       `json:"dish,omitempty" bson:"dish,omitempty"`
 }
 
+type ReqUpdateMenu struct {
+	UniqueID *string  `json:"uniqueId,omitempty"`
+	Name     *string  `json:"name"`
+	Dishes   []string `json:"dish,omitempty"`
+}
+
 var MenuModel = &utils.DBModel{
 	ColName:       "menu",
 	TemplateModel: Menu{},

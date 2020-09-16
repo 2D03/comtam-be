@@ -33,10 +33,14 @@ func main() {
 	// Routes
 	e.GET("/api-info", api.GetAPIInfo)
 	e.GET("/menu", api.GetMenu)
+	e.POST("/menu", api.CreateMenu)
+	e.PUT("/menu", api.UpdateMenu)
+	e.DELETE("/menu", api.DeleteMenu)
+
 	e.GET("/dish", api.GetDish)
+	e.POST("/dish", api.CreateDish)
 	e.PUT("/dish", api.UpdateDish)
 	e.DELETE("/dish", api.DeleteDish)
-	e.POST("/dish", api.CreateDish)
 
 	// Start server
 	e.Logger.Fatal(e.Start(":8000"))
