@@ -34,7 +34,8 @@ func main() {
 	e.GET("/api-info", api.GetAPIInfo)
 	e.GET("/menu", api.GetMenu)
 	e.GET("/dish", api.GetDish)
-	e.DELETE("dish", api.DeleteDish)
+	e.PUT("/dish", api.UpdateDish)
+	e.DELETE("/dish", api.DeleteDish)
 	e.POST("/dish", api.CreateDish)
 
 	// Start server
