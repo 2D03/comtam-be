@@ -8,9 +8,9 @@ import (
 	"net/http"
 )
 
-func CreateDish(c echo.Context) error {
+func UpdateDish(c echo.Context) error {
 	q := c.QueryParam("q")
-	var input model.Dish
+	var input *model.Dish
 	err := json.Unmarshal([]byte(q), &input)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, &utils.APIResponse{
@@ -18,25 +18,31 @@ func CreateDish(c echo.Context) error {
 			Message: "Error: " + err.Error(),
 		})
 	}
-
 	if input.UniqueID == nil {
 		return c.JSON(http.StatusBadRequest, &utils.APIResponse{
 			Status:  utils.APIStatus.Invalid,
 			Message: "Missing UniqueId",
 		})
 	}
-
-	result := model.DishModel.Create(input)
-	if result.Status != utils.APIStatus.Ok {
+	query := model.Dish{
+		UniqueID: input.UniqueID,
+	}
+	var updater model.Dish
+	if input.Name != nil {
+		updater.Name = input.Name
+	}
+	if input.PriceAmount != nil {
+		updater.PriceAmount = input.PriceAmount
+	}
+	res := model.DishModel.Update(query, updater)
+	if res.Status != utils.APIStatus.Ok {
 		return c.JSON(http.StatusInternalServerError, &utils.APIResponse{
-			Status:  utils.APIStatus.Error,
-			Message: result.Message,
+			Status:  res.Status,
+			Message: res.Message,
 		})
 	}
-
 	return c.JSON(http.StatusOK, &utils.APIResponse{
-		Status:  result.Status,
-		Message: result.Message,
-		Data:    result.Data,
+		Status:  res.Status,
+		Message: res.Message,
 	})
 }

@@ -5,6 +5,7 @@ type APIResponse struct {
 	Message   string      `json:"message"`
 	Data      interface{} `json:"data,omitempty"`
 	ErrorCode string      `json:"errorCode,omitempty"`
+	Total     int64       `json:"total,omitempty"`
 }
 
 type StatusEnum struct {
