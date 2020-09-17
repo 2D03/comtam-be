@@ -115,6 +115,7 @@ func (m *DBModel) Query(query interface{}) *APIResponse {
 		Status:  APIStatus.Ok,
 		Message: "Query " + m.ColName + " successfully.",
 		Data:    list,
+		Total:   int64(reflect.ValueOf(list).Len()),
 	}
 }
 
@@ -150,7 +151,7 @@ func (m *DBModel) Update(query interface{}, updater interface{}) *APIResponse {
 		m.collection = s.DB(m.DBName).C(m.ColName)
 	}
 	col := m.collection.With(s)
-	obj, err := m.convertToBson(query)
+	obj, err := m.convertToBson(updater)
 	if err != nil {
 		return &APIResponse{
 			Status:  APIStatus.Error,

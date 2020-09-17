@@ -1,7 +1,6 @@
 package api
 
 import (
-	"encoding/json"
 	"github.com/2D03/comtam-be/model"
 	"github.com/2D03/comtam-be/utils"
 	"github.com/labstack/echo/v4"
@@ -9,9 +8,8 @@ import (
 )
 
 func UpdateDish(c echo.Context) error {
-	q := c.QueryParam("q")
 	var input *model.Dish
-	err := json.Unmarshal([]byte(q), &input)
+	err := utils.GetContent(c, &input)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, &utils.APIResponse{
 			Status:  utils.APIStatus.Error,
@@ -31,8 +29,11 @@ func UpdateDish(c echo.Context) error {
 	if input.Name != nil {
 		updater.Name = input.Name
 	}
-	if input.PriceAmount != nil {
-		updater.PriceAmount = input.PriceAmount
+	if input.Price != nil {
+		updater.Price = input.Price
+	}
+	if input.MenuId != nil {
+		updater.MenuId = input.MenuId
 	}
 	res := model.DishModel.Update(query, updater)
 	if res.Status != utils.APIStatus.Ok {

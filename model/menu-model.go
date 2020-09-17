@@ -11,11 +11,20 @@ type Menu struct {
 	ID              bson.ObjectId `json:"-" bson:"_id,omitempty"`
 	CreatedTime     *time.Time    `json:"createdTime" bson:"created_time,omitempty"`
 	LastUpdatedTime *time.Time    `json:"lastUpdatedTime" bson:"last_updated_time,omitempty"`
-	CreatedById     *string       `json:"createdById" bson:"created_by_id,omitempty"`
-	CreatedByName   *string       `json:"createdByName" bson:"created_by_name,omitempty"`
 	UniqueID        *string       `json:"uniqueId,omitempty" bson:"unique_id,omitempty"`
-	Name            *string       `json:"name" bson:"name"`
-	Dish            []*Dish       `json:"dish,omitempty" bson:"dish,omitempty"`
+	Name            *string       `json:"name" bson:"name,omitempty"`
+}
+
+type ReqUpdateMenu struct {
+	UniqueID *string `json:"uniqueId,omitempty"`
+	Name     *string `json:"name,omitempty"`
+}
+
+type MenuForFilter struct {
+	CreatedById   interface{} `json:"createdById" bson:"created_by_id,omitempty"`
+	CreatedByName interface{} `json:"createdByName" bson:"created_by_name,omitempty"`
+	UniqueID      interface{} `json:"uniqueId" bson:"unique_id,omitempty"`
+	Name          interface{} `json:"name" bson:"name,omitempty"`
 }
 
 var MenuModel = &utils.DBModel{

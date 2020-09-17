@@ -8,14 +8,18 @@ import (
 )
 
 func GetMenu(c echo.Context) error {
-	rs := model.MenuModel.Query(nil)
+	id := c.QueryParam("uniqueId")
+	var query model.Menu
+	if id != "" {
+		query.UniqueID = &id
+	}
+	rs := model.MenuModel.Query(query)
 	if rs.Status != utils.APIStatus.Ok {
 		return c.JSON(http.StatusInternalServerError, &utils.APIResponse{
 			Status:  utils.APIStatus.Error,
 			Message: rs.Message,
 		})
 	}
-	rs.Total = model.MenuModel.Count(nil).Total
 	return c.JSON(http.StatusOK, &utils.APIResponse{
 		Status:  rs.Status,
 		Message: rs.Message,

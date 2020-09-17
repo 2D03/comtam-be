@@ -11,6 +11,10 @@ steps:
            'env=${_ENV}',
            '--build-arg',
            'config=${_CONFIG}',
+           '--build-arg',
+           'ToEmail=${_TO_EMAIL}',
+           '--build-arg',
+           'SENDGRID_API_KEY=${_SENDGRID_API_KEY}',
            '-t',
            'gcr.io/$PROJECT_ID/comtam-deployment:$SHORT_SHA',
            '.']

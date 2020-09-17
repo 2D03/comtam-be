@@ -7,4 +7,6 @@ require (
 	github.com/json-iterator/go v1.1.10 // indirect
 	github.com/labstack/echo v3.3.10+incompatible // indirect
 	github.com/labstack/echo/v4 v4.1.17
+	github.com/sendgrid/rest v2.6.1+incompatible // indirect
+	github.com/sendgrid/sendgrid-go v3.6.3+incompatible
 )
