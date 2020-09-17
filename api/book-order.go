@@ -8,7 +8,6 @@ import (
 	"github.com/sendgrid/sendgrid-go"
 	"github.com/sendgrid/sendgrid-go/helpers/mail"
 	"net/http"
-	"os"
 	"strconv"
 )
 
@@ -73,8 +72,7 @@ func BookOrder(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, &utils.APIResponse{
 		Status:  utils.APIStatus.Ok,
-		Message: os.Getenv("_SENDGRID_API_KEY"),
-		Data:    os.Getenv("SENDGRID_API_KEY") + os.Getenv("ToEmail"),
+		Message: "Booking order successfully",
 	})
 }
 

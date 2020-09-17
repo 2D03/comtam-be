@@ -21,8 +21,8 @@ var SendgridAPIKey string
 
 func init() {
 	env := os.Getenv("env")
-	SendgridAPIKey = os.Getenv("SENDGRID_API_KEY")
-	toEmail := os.Getenv("ToEmail")
+	SendgridAPIKey = os.Getenv("_SENDGRID_API_KEY")
+	toEmail := os.Getenv("_TO_EMAIL")
 	ToEmail = strings.Split(toEmail, ",")
 	switch env {
 	case "local":
