@@ -53,6 +53,10 @@ func BookOrder(c echo.Context) error {
 	if input.TotalPrice == nil {
 		input.TotalPrice = &defaultPrice
 	}
+	defaultNote := ""
+	if input.Note == nil {
+		input.Note = &defaultNote
+	}
 
 	rs := sendEmail(input)
 	if rs.Status != utils.APIStatus.Ok {
@@ -110,7 +114,8 @@ func infoMail(input *model.Order) []byte {
 		"Số điện thoại người nhận: " + *input.Phone + "\n" +
 		"Địa chỉ: " + *input.Address + "\n" +
 		"Tổng tiền: " + strconv.FormatInt(*input.TotalPrice, 10) + "\n" +
-		"Đơn hàng: \n" + dishes
+		"Đơn hàng: \n" + dishes +
+		"Chú thích: " + *input.Note
 	content := mail.NewContent("text/plain", plainTextContent)
 
 	address = conf.ToEmail[0]

@@ -17,6 +17,7 @@ type Order struct {
 	Phone           *string       `json:"phone" bson:"phone,omitempty"`
 	OrdererName     *string       `json:"ordererName" bson:"orderer_name,omitempty"`
 	ReceiverName    *string       `json:"receiverName" bson:"receiver_name,omitempty"`
+	Note            *string       `json:"note" bson:"note,omitempty"`
 }
 
 type OrderDish struct {
