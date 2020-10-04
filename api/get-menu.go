@@ -9,9 +9,13 @@ import (
 
 func GetMenu(c echo.Context) error {
 	id := c.QueryParam("uniqueId")
+	name := c.QueryParam("name")
 	var query model.Menu
 	if id != "" {
 		query.UniqueID = &id
+	}
+	if name != "" {
+		query.Name = &name
 	}
 	rs := model.MenuModel.Query(query)
 	if rs.Status != utils.APIStatus.Ok {

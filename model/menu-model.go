@@ -12,7 +12,7 @@ type Menu struct {
 	CreatedTime     *time.Time    `json:"createdTime" bson:"created_time,omitempty"`
 	LastUpdatedTime *time.Time    `json:"lastUpdatedTime" bson:"last_updated_time,omitempty"`
 	UniqueID        *string       `json:"uniqueId,omitempty" bson:"unique_id,omitempty"`
-	Name            *string       `json:"name" bson:"name,omitempty"`
+	Name            *string       `json:"name,omitempty" bson:"name,omitempty"`
 }
 
 type ReqUpdateMenu struct {
@@ -21,10 +21,10 @@ type ReqUpdateMenu struct {
 }
 
 type MenuForFilter struct {
-	CreatedById   interface{} `json:"createdById" bson:"created_by_id,omitempty"`
-	CreatedByName interface{} `json:"createdByName" bson:"created_by_name,omitempty"`
-	UniqueID      interface{} `json:"uniqueId" bson:"unique_id,omitempty"`
-	Name          interface{} `json:"name" bson:"name,omitempty"`
+	CreatedById   interface{} `json:"createdById,omitempty" bson:"created_by_id,omitempty"`
+	CreatedByName interface{} `json:"createdByName,omitempty" bson:"created_by_name,omitempty"`
+	UniqueID      interface{} `json:"uniqueId,omitempty" bson:"unique_id,omitempty"`
+	Name          interface{} `json:"name,omitempty" bson:"name,omitempty"`
 }
 
 var MenuModel = &utils.DBModel{
