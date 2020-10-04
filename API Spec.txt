@@ -1,0 +1,172 @@
+- GET /api-info
+  get service health check 
+- GET /menu
+  - Get all menu (Side dish, main course...)
+  - input: 
+    params:
+      name: string
+      uniqueId: string 
+  - output:
+    {
+      status: string (OK/Not found/error/invalid...)
+      message: string
+      data: [
+              {
+                createdTime
+                lastUpdatedTime
+                uniqueId
+                name
+              }
+            ]
+    }
+- POST /menu
+  - Create new menu
+  - Input:
+    params:
+       q: {
+             name: string
+	     uniqueId: string
+          }
+  - output:
+    {
+      status: string (OK/Not found/error/invalid...)
+      message: string
+      data: [
+              {
+                createdTime
+                lastUpdatedTime
+                uniqueId
+                name
+              }
+            ]
+    }
+
+- PUT /menu 
+  - Update menu info
+  - Input:
+    body:
+       {
+           name: string
+	   uniqueId: string
+       }
+  - output:
+    {
+      status: string (OK/Not found/error/invalid...)
+      message: string
+    }
+
+- DELETE /menu 
+  - Remove menu item
+  - Input:
+    params:
+	uniqueId: string
+  - output:
+    {
+      status: string (OK/Not found/error/invalid...)
+      message: string
+    }
+
+
+
+
+- GET /dish
+  - Get all dish
+  - input: 
+    params:
+      q: {
+             	name: string
+	     	uniqueId: string
+		menuId: string
+		price: int
+          }
+  - output:
+    {
+      status: string (OK/Not found/error/invalid...)
+      message: string
+      data: [
+              {
+                name: string
+	     	uniqueId: string
+		menuId: string
+		price: int
+              }
+            ]
+    }
+- POST /dish
+  - Create new dish
+  - Input:
+    body:
+        {
+             	name: string
+	     	uniqueId: string
+		menuId: string
+		price: int
+        }
+  - output:
+    {
+      status: string (OK/Not found/error/invalid...)
+      message: string
+      data: [
+              {
+                name: string
+	     	uniqueId: string
+		menuId: string
+		price: int
+              }
+            ]
+    }
+
+- PUT /dish
+  - Update dish info
+  - Input:
+    body:
+        {
+             	name: string
+	     	uniqueId: string
+		menuId: string
+		price: int
+        }
+  - output:
+    {
+      status: string (OK/Not found/error/invalid...)
+      message: string
+    }
+
+- DELETE /dish
+  - Remove dish item
+  - Input:
+    params:
+	uniqueId: string
+  - output:
+    {
+      status: string (OK/Not found/error/invalid...)
+      message: string
+    }
+
+
+
+- POST /order
+  - Booking order
+  - Input:
+    body:
+        {
+             	ordererName: string
+		receiverName: string
+		note: string
+	     	phone: string
+		address: string
+		totalPrice: int
+		dishes: [
+				{
+					name: string
+					menuId: string
+					amount: int
+					price: int
+				}
+			]
+        }
+  - output:
+    {
+      status: string (OK/Not found/error/invalid...)
+      message: string
+    }
